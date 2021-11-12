@@ -19,6 +19,7 @@ int thread_pool_epoll_listen(int epfd, thread_pool_t *p, int sockfd)
 			{
 				if(ready_array[i].data.fd == sockfd)
 				{
+					printf("服务器:辨别连接请求，即将投递链接业务..\n");
 					bs.BUSINES_ADDR = BUSINES_ACCEPT;
 					bs.BUSINES_ARG = (void *)&(ready_array[i].data.fd);
 					//添加业务A（链接）
@@ -26,6 +27,7 @@ int thread_pool_epoll_listen(int epfd, thread_pool_t *p, int sockfd)
 				}
 				else
 				{
+					printf("服务器:辨别连接请求，即将投递处理业务..\n");
 					bs.BUSINES_ADDR = BUSINES_RESPONSE;
 					bs.BUSINES_ARG = (void *)&(ready_array[i].data.fd);
 					//添加业务B（处理）

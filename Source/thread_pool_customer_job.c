@@ -16,6 +16,7 @@ void *thread_pool_customer_job(void *arg)
 		pthread_mutex_lock(&pool->thread_lock);
 		while(pool->b_cur == 0)
 		{
+			printf("服务器:[消费者]不满足工作条件，挂起线程..\n");
 			pthread_cond_wait(&pool->not_empty, &pool->thread_lock);
 			if(pool->thread_exitcode > 0)
 				break;
@@ -48,8 +49,10 @@ void *thread_pool_customer_job(void *arg)
 		pthread_mutex_unlock(&pool->thread_lock);
 		
 		pthread_cond_signal(&pool->not_full);
-		
+		printf("服务器:[消费者]获取任务成功，唤醒一个生产者..\n");
+
 		//执行任务
+		printf("服务器:[消费者]执行任务..\n");
 		bs.BUSINES_ADDR(bs.BUSINES_ARG);
 
 		pthread_mutex_lock(&pool->thread_lock);
